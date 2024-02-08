@@ -22,6 +22,8 @@ app
   .use(express.json())
   .use("/listings", listingRouter)
   .use("/bookings", bookingRouter)
+  .use("/signup", signup)
+  .use("/login", login)
   .use(routeNotFound)
   .use(globalErrorHandler)
   .listen(PORT, () => console.log(`Server is running on port ${PORT}`));
