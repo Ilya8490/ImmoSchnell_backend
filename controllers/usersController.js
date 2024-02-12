@@ -1,7 +1,7 @@
 import User from "../models/userModel.js";
 import bcrypt from 'bcryptjs';
 import successHandler from "../middlewares/successHandler.js";
-import { isValidId } from "../middlewares/errorHandlers.js";
+import { isValidId } from "../middlewares/errorHandler.js";
 
 const usersController = {
   async createUser(req, res, next) {
@@ -71,7 +71,6 @@ const usersController = {
       next(error);
     }
   },
-  
   
 };
 

@@ -65,3 +65,5 @@ export const protect = async (req, res, next) => {
     next(error);
   }
 };
+
+export default authController
