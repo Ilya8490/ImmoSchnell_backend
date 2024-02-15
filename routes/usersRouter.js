@@ -1,13 +1,23 @@
 import express from "express";
-
-import { login, signup, getAllUsers } from "../controllers/usersController.js";
+import usersController from "../controllers/usersController.js";
 import validateSanitize from "../middlewares/validateSanitize.js";
 
 const router = express.Router();
 
-router
-  .get("/", getAllUsers)
-  .post("/signup", validateSanitize, signup)
-  .post("/login", validateSanitize, login);
+router.route("/")
+  .get(usersController.getAllUsers) 
+  .post(validateSanitize, usersController.createUser); 
+
+router.route("/signup")
+  .post(validateSanitize, usersController.createUser); 
+
+router.route("/login")
+  .post(validateSanitize, usersController.login); 
+
+router.route("/:id")
+  .get(usersController.getUserById) 
+  .put(validateSanitize, usersController.updateUserById) 
+  .delete(usersController.deleteUserById); 
 
 export default router;
+
