@@ -1,41 +1,9 @@
 import successHandler from "../middlewares/successHandler.js";
 import Listing from "../models/listingModel.js";
-import Booking from "../models/bookingModel.js";
 
 export const getAllListings = async (req, res, next) => {
   try {
-    let listings;
-    let query = Listing.find();
-    const guestCount = req.query.guestCount;
-    const destination = req.query.destination;
-    // date format : YYYY-MM-DD
-    const checkIn = req.query.checkIn;
-    const checkOut = req.query.checkOut;
-    if (guestCount) {
-      query = query.where("numberOfBeds").gte(guestCount);
-    }
-
-    if (destination) {
-      query = query.or([
-        { city: { $regex: new RegExp(destination, "i") } },
-        { country: { $regex: new RegExp(destination, "i") } },
-        { state: { $regex: new RegExp(destination, "i") } },
-      ]);
-    }
-
-    const bookedListings = await Booking.find({
-      $or: [
-          { checkIn: { $lt: checkIn} , checkOut: {$gt: checkIn } }, 
-          { checkIn: {$lt: checkOut}, checkOut: {$gt:checkOut}},
-          { checkIn: {$gt: checkIn}, checkOut: {$lt:checkOut}},
-      ]
-  }).distinct('listing');
-  query = query.where('_id').nin(bookedListings);
-
-
-
-    listings = await query.exec();
-
+    const listings = await Listing.find();
     successHandler(res, 200, listings);
   } catch (error) {
     next(error);
