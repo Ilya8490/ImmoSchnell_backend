@@ -11,8 +11,8 @@ const validateSanitize = [
     .isEmail()
     .withMessage("Invalid email address")
     .normalizeEmail()
-    .escape(),
-  check("email").custom(value => {
+    .escape()
+    .custom(value => {
       return User.findOne({email: value}).then(user => {
         if (user) {
           return Promise.reject('E-mail already in use');
