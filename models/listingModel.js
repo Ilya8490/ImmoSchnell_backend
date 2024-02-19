@@ -1,6 +1,10 @@
 import { Schema, model } from "mongoose";
 
 const listingSchema = new Schema({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
   name: String,
   streetName: String,
   apartmentNumber: String,
@@ -32,7 +36,7 @@ const listingSchema = new Schema({
       value: Boolean,
     },
   ],
-  owner: String,
+  
 });
 
 export default model("Listing", listingSchema);
