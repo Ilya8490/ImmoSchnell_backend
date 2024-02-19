@@ -2,8 +2,6 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import "dotenv/config";
-
-
 import listingRouter from "./routes/listingRouter.js";
 import bookingRouter from "./routes/bookingRouter.js"
 import signupRouter from "./routes/signupRouter.js"
