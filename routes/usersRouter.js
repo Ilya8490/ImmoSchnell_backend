@@ -9,12 +9,6 @@ router.route("/")
   .get(usersController.getAllUsers) 
   .post(validateSanitize, usersController.createUser); 
 
-router.route("/signup")
-  .post(validateSanitize, usersController.createUser); 
-
-router.route("/login")
-  .post(validateSanitize, login); 
-
 router.route("/:id")
   .get(usersController.getUserById) 
   .put(validateSanitize, usersController.updateUserById) 

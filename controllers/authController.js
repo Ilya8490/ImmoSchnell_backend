@@ -36,14 +36,14 @@ const createSendToken = (res, status, user) => {
 };
 
 //! Controllers
-export const signup = async (req, res, next) => {
-  try {
-    const user = await User.create(req.body);
-    createSendToken(res, 201, user);
-  } catch (error) {
-    next(error);
-  }
-};
+// export const signup = async (req, res, next) => {
+//   try {
+//     const user = await User.create(req.body);
+//     createSendToken(res, 201, user);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 export const login = async (req, res, next) => {
   try {
