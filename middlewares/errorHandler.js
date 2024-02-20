@@ -26,3 +26,57 @@ export const globalErrorHandler = (err, req, res, next) => {
     stack: err.stack,
   });
 };
+
+export const userNotFound = async (req, userResource) => {
+  const user = await userResource.findById(req.body.user);
+  if (!user) {
+    throw createError(404, "User does not exist");
+  }
+};
+
+export const listingNotFound = async (req, listingResource) => {
+  const listing = await listingResource.findById(req.body.listing);
+  if (!listing) {
+    throw createError(404, "Listing does not exist");
+  }
+};
+
+export const checkListingCapacity = (req, numberOfBeds) => {
+  const guestCount = req.body.guestCount;
+  if (guestCount > numberOfBeds) {
+    throw createError(400, "Listing does not have enough capacity");
+  }
+};
+
+export const checkPrice = (req, pricePerNight) => {
+  const price = req.body.price;
+  const checkIn = new Date(req.body.checkIn);
+  const checkOut = new Date(req.body.checkOut);
+  const oneDay = 1000 * 60 * 60 * 24;
+
+  const totalPrice =
+    Math.round((checkOut.getTime() - checkIn.getTime()) / oneDay) *
+    pricePerNight;
+  if (price !== totalPrice) {
+    throw createError(400, "Price is not correct");
+  }
+};
+
+export const checkIfListingAvailable = async (req, bookingResource) => {
+  const checkIn = req.body.checkIn;
+  const checkOut = req.body.checkOut;
+  const listingId = req.body.listing;
+  const listingBookings = await bookingResource
+    .find({
+      $or: [
+        { checkIn: { $lt: checkIn }, checkOut: { $gt: checkIn } },
+        { checkIn: { $lt: checkOut }, checkOut: { $gt: checkOut } },
+        { checkIn: { $gt: checkIn }, checkOut: { $lt: checkOut } },
+      ],
+    })
+    .where("listing")
+    .equals(listingId);
+  if (listingBookings.length > 0) {
+    throw createError(400, "Property is not available");
+  }
+};

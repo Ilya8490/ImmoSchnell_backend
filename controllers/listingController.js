@@ -1,6 +1,8 @@
 import successHandler from "../middlewares/successHandler.js";
+import {userNotFound } from "../middlewares/errorHandler.js";
 import Listing from "../models/listingModel.js";
 import Booking from "../models/bookingModel.js";
+import User from "../models/userModel.js";
 
 export const getAllListings = async (req, res, next) => {
   try {
@@ -25,14 +27,12 @@ export const getAllListings = async (req, res, next) => {
 
     const bookedListings = await Booking.find({
       $or: [
-          { checkIn: { $lt: checkIn} , checkOut: {$gt: checkIn } }, 
-          { checkIn: {$lt: checkOut}, checkOut: {$gt:checkOut}},
-          { checkIn: {$gt: checkIn}, checkOut: {$lt:checkOut}},
-      ]
-  }).distinct('listing');
-  query = query.where('_id').nin(bookedListings);
-
-
+        { checkIn: { $lt: checkIn }, checkOut: { $gt: checkIn } },
+        { checkIn: { $lt: checkOut }, checkOut: { $gt: checkOut } },
+        { checkIn: { $gt: checkIn }, checkOut: { $lt: checkOut } },
+      ],
+    }).distinct("listing");
+    query = query.where("_id").nin(bookedListings);
 
     listings = await query.exec();
 
@@ -54,6 +54,7 @@ export const getListingById = async (req, res, next) => {
 export const addListing = async (req, res, next) => {
   try {
     const listing = req.body;
+    await userNotFound(req, User);
     Listing.create(listing);
     successHandler(res, 200, listing);
   } catch (error) {
