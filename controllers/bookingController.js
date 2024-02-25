@@ -1,4 +1,4 @@
-import successHandler from "../middlewares/successHandler.js";
+import {successHandler} from "../middlewares/successHandler.js";
 import {
   userNotFound,
   listingNotFound,

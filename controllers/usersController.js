@@ -1,6 +1,6 @@
 import User from "../models/userModel.js";
 import bcrypt from 'bcryptjs';
-import successHandler from "../middlewares/successHandler.js";
+import {successHandler} from "../middlewares/successHandler.js";
 import { isValidId } from "../middlewares/errorHandler.js";
 
 const usersController = {

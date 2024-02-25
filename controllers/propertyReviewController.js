@@ -1,4 +1,4 @@
-import successHandler from "../middlewares/successHandler.js";
+import {successHandler} from "../middlewares/successHandler.js";
 import PropertyReview from "../models/propertyReviewModel.js";
 
 export const getAllPropertyReviews = async (req, res, next) => {

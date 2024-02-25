@@ -1,4 +1,4 @@
-import successHandler from "../middlewares/successHandler.js";
+import {successHandler} from "../middlewares/successHandler.js";
 import PaymentMethod from "../models/paymentMethodModel.js";
 
 export const getAllPaymentMethods = async (req, res, next) => {
