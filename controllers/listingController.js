@@ -6,6 +6,26 @@ import User from "../models/userModel.js";
 
 export const getAllListings = async (req, res, next) => {
   try {
+
+    const defaultSortBy = "rating";
+    const defaultSortOrder = "descending";
+    const sortByParam = req.query.sortBy;
+    const sortOrderParam = req.query.sortOrder;
+    let sortBy;
+    let sortOrder;
+
+    if (sortByParam) {
+      if(sortOrderParam) {
+        sortOrder = sortOrderParam;
+      } else {
+        sortOrder = defaultSortOrder;
+      }
+      sortBy = sortByParam;
+    } else {
+      sortBy = defaultSortBy;
+      sortOrder = defaultSortOrder;
+    };
+
     let listings;
     let query = Listing.find();
     const guestCount = req.query.guestCount;
@@ -34,12 +54,19 @@ export const getAllListings = async (req, res, next) => {
     }).distinct("listing");
     query = query.where("_id").nin(bookedListings);
 
+    query = query.sort({[sortBy]:sortOrder});
+
     listings = await query.exec();
+
+
 
     successHandler(res, 200, listings);
   } catch (error) {
     next(error);
   }
+
+
+
 };
 
 export const getListingById = async (req, res, next) => {
