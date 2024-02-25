@@ -8,11 +8,28 @@ import {
 } from "../middlewares/errorHandler.js";
 import Booking from "../models/bookingModel.js";
 import Listing from "../models/listingModel.js";
-import User from "../models/userModel.js"
+import User from "../models/userModel.js";
 
 export const getAllBookings = async (req, res, next) => {
   try {
-    const bookings = await Booking.find().populate([
+    const defaultSortBy = "checkIn";
+    const defaultSortOrder = "descending";
+    const sortByParam = req.query.sortBy;
+    const sortOrderParam = req.query.sortOrder;
+    let sortBy;
+    let sortOrder;
+    if (sortByParam) {
+      if (sortOrderParam) {
+        sortOrder = sortOrderParam;
+      } else {
+        sortOrder = defaultSortOrder;
+      }
+      sortBy = sortByParam;
+    } else {
+      sortBy = defaultSortBy;
+      sortOrder = defaultSortOrder;
+    }
+    const bookings = await Booking.find().sort({[sortBy]:sortOrder}).populate([
       { path: "listing", strictPopulate: false },
     ]);
     successHandler(res, 200, bookings);
