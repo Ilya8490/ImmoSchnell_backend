@@ -1,12 +1,15 @@
-import successHandler from "../middlewares/successHandler.js";
-import {userNotFound } from "../middlewares/errorHandler.js";
+import {
+  successHandler,
+  paginatedSuccessHandler,
+} from "../middlewares/successHandler.js";
+import { userNotFound } from "../middlewares/errorHandler.js";
 import Listing from "../models/listingModel.js";
 import Booking from "../models/bookingModel.js";
 import User from "../models/userModel.js";
 
 export const getAllListings = async (req, res, next) => {
   try {
-
+    const { limit, page } = req.query;
     const defaultSortBy = "rating";
     const defaultSortOrder = "descending";
     const sortByParam = req.query.sortBy;
@@ -15,7 +18,7 @@ export const getAllListings = async (req, res, next) => {
     let sortOrder;
 
     if (sortByParam) {
-      if(sortOrderParam) {
+      if (sortOrderParam) {
         sortOrder = sortOrderParam;
       } else {
         sortOrder = defaultSortOrder;
@@ -24,7 +27,7 @@ export const getAllListings = async (req, res, next) => {
     } else {
       sortBy = defaultSortBy;
       sortOrder = defaultSortOrder;
-    };
+    }
 
     let listings;
     let query = Listing.find();
@@ -54,19 +57,20 @@ export const getAllListings = async (req, res, next) => {
     }).distinct("listing");
     query = query.where("_id").nin(bookedListings);
 
-    query = query.sort({[sortBy]:sortOrder});
+    query = query.sort({ [sortBy]: sortOrder });
+    const totalListingCount = await Listing.estimatedDocumentCount(
+      query
+    ).exec();
+    if (page && limit) {
+      query = query.skip((page - 1) * limit).limit(limit);
+    }
 
     listings = await query.exec();
 
-
-
-    successHandler(res, 200, listings);
+    paginatedSuccessHandler(res, 200, listings, totalListingCount);
   } catch (error) {
     next(error);
   }
-
-
-
 };
 
 export const getListingById = async (req, res, next) => {

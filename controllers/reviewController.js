@@ -1,4 +1,4 @@
-import successHandler from "../middlewares/successHandler.js";
+import {successHandler} from "../middlewares/successHandler.js";
 import Review from "../models/reviewModel.js";
 
 export const getAllReviews = async (req, res, next) => {
