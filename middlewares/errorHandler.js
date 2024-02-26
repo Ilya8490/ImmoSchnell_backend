@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import createError from "http-errors";
 
+
 export const isValidId = (req) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
     throw createError(400, `Invalid ID in ${req.originalUrl}`);
@@ -35,9 +36,36 @@ export const userNotFound = async (req, userResource) => {
 };
 
 export const listingNotFound = async (req, listingResource) => {
-  const listing = await listingResource.findById(req.body.listing);
+  let listingId = req.params.listing;
+  if(!listingId) {
+    listingId = req.body.listing
+  }
+  const listing = await listingResource.findById(listingId);
   if (!listing) {
     throw createError(404, "Listing does not exist");
+  }
+};
+
+
+export const bookingNotFound = async (req, bookingResource) => {
+  const booking = await bookingResource.findById(req.body.booking);
+  if(!booking) {
+    throw createError(404, "booking does not exist")
+  }
+  return booking;
+};
+
+export const checkIfReviewAlreadyExists = async (req, propertyReviewResource) => {
+  const propertyReview = await propertyReviewResource.findOne({booking: req.body.booking});
+  if(propertyReview){
+    throw createError(400, "review already exists");
+  }
+};
+
+export const propertyReviewNotfound = async (req, propertyReviewResource) => {
+  const propertyReview = await propertyReviewResource.findById(req.params.propertyReview);
+  if(!propertyReview) {
+    throw createError(404, "Property review does not exist");
   }
 };
 
