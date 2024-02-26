@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import bcrypt from "bcrypt";
 
 const userSchema = new Schema({
   firstName: {
@@ -45,5 +46,26 @@ const userSchema = new Schema({
     }
   },
 });
+
+userSchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 12);
+  }
+  next();
+});
+
+userSchema.pre("findOneAndUpdate", async function (next) {
+  if (this._update && this._update.password) {
+    this._update.password = await bcrypt.hash(this._update.password, 12);
+  }
+  next();
+});
+
+userSchema.methods.correctPassword = async function (
+  inputPassword,
+  userPassword
+) {
+  return await bcrypt.compare(inputPassword, userPassword);
+};
 
 export default model("User", userSchema);
