@@ -2,7 +2,7 @@ import {
   successHandler,
   paginatedSuccessHandler,
 } from "../middlewares/successHandler.js";
-import { userNotFound } from "../middlewares/errorHandler.js";
+import { listingNotFound, userNotFound } from "../middlewares/errorHandler.js";
 import Listing from "../models/listingModel.js";
 import Booking from "../models/bookingModel.js";
 import User from "../models/userModel.js";
@@ -104,6 +104,7 @@ export const deleteListingById = async (req, res, next) => {
 
 export const updateListingById = async (req, res, next) => {
   try {
+    await listingNotFound(req, Listing);
     const listing = await Listing.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
@@ -115,6 +116,7 @@ export const updateListingById = async (req, res, next) => {
 
 export const updateSingleAttributeById = async (req, res, next) => {
   try {
+    await listingNotFound(req, Listing);
     const listing = await Listing.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });

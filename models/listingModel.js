@@ -24,6 +24,7 @@ const listingSchema = new Schema({
   childrenAllowed: Boolean,
   description: String,
   rating: Number,
+  numberOfRatings: Number,
   images: [
     {
       name: String,

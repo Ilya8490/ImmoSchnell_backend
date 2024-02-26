@@ -5,6 +5,7 @@ import {
   checkListingCapacity,
   checkPrice,
   checkIfListingAvailable,
+  bookingNotFound
 } from "../middlewares/errorHandler.js";
 import Booking from "../models/bookingModel.js";
 import Listing from "../models/listingModel.js";
@@ -78,6 +79,7 @@ export const deleteBookingById = async (req, res, next) => {
 
 export const updateSingleAttributeById = async (req, res, next) => {
   try {
+    await bookingNotFound(req, Booking)
     const booking = await Booking.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
