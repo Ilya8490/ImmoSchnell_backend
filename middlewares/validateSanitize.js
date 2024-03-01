@@ -11,14 +11,7 @@ const validateSanitize = [
     .isEmail()
     .withMessage("Invalid email address")
     .normalizeEmail()
-    .escape()
-    .custom(value => {
-      return User.findOne({email: value}).then(user => {
-        if (user) {
-          return Promise.reject('E-mail already in use');
-        }
-      });
-    }),
+    .escape(),
     
   check("password")
     .trim()
@@ -26,7 +19,7 @@ const validateSanitize = [
     .notEmpty()
     .withMessage("Password is required")
     .isLength({ min: 8 })
-    .withMessage("Password must be at least 8 charachters"),
+    .withMessage("Password must be at least 8 characters"),
   
   check("dateOfBirth")
     .notEmpty()
