@@ -1,7 +1,6 @@
 import createError from "http-errors";
 import jwt from "jsonwebtoken";
 
-
 import User from "../models/userModel.js";
 
 //! Helpers
@@ -36,16 +35,6 @@ const createSendToken = (res, status, user) => {
   });
 };
 
-//! Controllers
-// export const signup = async (req, res, next) => {
-//   try {
-//     const user = await User.create(req.body);
-//     createSendToken(res, 201, user);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -57,6 +46,7 @@ export const login = async (req, res, next) => {
     const user = await User.findOne({ email });
 
     const correct = await user.correctPassword(password, user.password);
+
     if (!user || !correct) {
       throw createError(401, "Incorrect email or password");
     }
