@@ -22,23 +22,23 @@ export default [
     "images": [
       {
         "name": "Living Room",
-        "url": "https://example.com/images/living_room.jpg"
+        "url": "images/PROPERTIES/PROP1-cirecester gloucestershire/prop1-attic.jpg"
       },
       {
         "name": "Bedroom",
-        "url": "https://example.com/images/bedroom.jpg"
+        "url": "images/PROPERTIES/PROP1-cirecester gloucestershire/prop1-bed1.jpg"
       },
       {
         "name": "Bathroom",
-        "url": "https://example.com/images/bathroom.jpg"
+        "url": "images/PROPERTIES/PROP1-cirecester gloucestershire/prop1-bathroom.jpg"
       },
       {
         "name": "Dining Room",
-        "url": "https://example.com/images/dining_room.jpg"
+        "url": "images/PROPERTIES/PROP1-cirecester gloucestershire/prop1-kitchen.jpg"
       },
       {
         "name": "Kitchen",
-        "url": "https://example.com/images/kitchen.jpg"
+        "url": "images/PROPERTIES/PROP1-cirecester gloucestershire/prop1-kitchen.jpg"
       }
     ],
     "attributes": [
