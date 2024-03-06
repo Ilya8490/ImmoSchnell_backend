@@ -1,6 +1,7 @@
 import createError from "http-errors";
 import jwt from "jsonwebtoken";
 
+
 import User from "../models/userModel.js";
 
 //! Helpers
@@ -54,8 +55,8 @@ export const login = async (req, res, next) => {
     }
 
     const user = await User.findOne({ email });
-    const correct = await user.correctPassword(password, user.password);
 
+    const correct = await user.correctPassword(password, user.password);
     if (!user || !correct) {
       throw createError(401, "Incorrect email or password");
     }
@@ -82,7 +83,6 @@ export const logout = (req, res, next) => {
 
 export const protect = async (req, res, next) => {
   try {
-
     let jwtToken = req.cookies["jwtToken"];
     if (!jwtToken) throw createError(401, "Unauthorized request");
 
@@ -101,5 +101,3 @@ export const protect = async (req, res, next) => {
     next(error);
   }
 };
-
-

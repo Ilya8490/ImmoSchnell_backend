@@ -66,7 +66,10 @@ export const deletePropertyReviewById = async (req, res, next) => {
 
 export const updatePropertyReviewById = async (req, res, next) => {
   try {
+    console.log(req.query.id)
+    console.log(req)
     await propertyReviewNotfound(req, PropertyReview)
+    
     const review = await PropertyReview.findByIdAndUpdate(
       req.params.id,
       req.body,

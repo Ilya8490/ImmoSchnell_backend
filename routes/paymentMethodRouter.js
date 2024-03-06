@@ -1,18 +1,18 @@
 import express from "express";
 
 import {
-  getAllPaymentMethods,
   getPaymentMethodById,
   addPaymentMethod,
   deletePaymentMethodById,
   updatePaymentMethodById,
-  updateSingleAttributeById
+  updateSingleAttributeById,
+  getAllPaymentMethodsOfUser
 } from "../controllers/paymentMethodController.js";
 
 
 const router = express.Router();
 
-router.route("/").get(getAllPaymentMethods);
+router.route("/").get(getAllPaymentMethodsOfUser);
 
 router.route("/:id").get(getPaymentMethodById);
 

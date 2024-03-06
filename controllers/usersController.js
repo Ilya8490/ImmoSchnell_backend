@@ -1,22 +1,21 @@
 import User from "../models/userModel.js";
-import bcrypt from 'bcryptjs';
-import {successHandler} from "../middlewares/successHandler.js";
+import bcrypt from "bcryptjs";
+import { successHandler } from "../middlewares/successHandler.js";
 import { isValidId } from "../middlewares/errorHandler.js";
 
 const usersController = {
   async createUser(req, res, next) {
     try {
-      const hashedPassword = await bcrypt.hash(req.body.password, 8);
       const user = new User({
         ...req.body,
-        password: hashedPassword,
       });
 
       const savedUser = await user.save();
       successHandler(res, 201, savedUser);
     } catch (error) {
+      console.log(error);
       if (error.code === 11000) {
-        return next(new Error('Email already in use'));
+        return next(new Error("Email already in use"));
       }
       next(error);
     }
@@ -71,7 +70,6 @@ const usersController = {
       next(error);
     }
   },
-  
 };
 
 export default usersController;
