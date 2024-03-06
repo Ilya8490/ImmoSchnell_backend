@@ -36,7 +36,7 @@ export const userNotFound = async (req, userResource) => {
 };
 
 export const listingNotFound = async (req, listingResource) => {
-  let listingId = req.params.listing;
+  let listingId = req.params.id;
   if(!listingId) {
     listingId = req.body.listing
   }
@@ -48,7 +48,11 @@ export const listingNotFound = async (req, listingResource) => {
 
 
 export const bookingNotFound = async (req, bookingResource) => {
-  const booking = await bookingResource.findById(req.body.booking);
+  let bookingId = req.params.id;
+  if(!bookingId) {
+    bookingId = req.body.booking 
+  }
+  const booking = await bookingResource.findById(bookingId);
   if(!booking) {
     throw createError(404, "booking does not exist")
   }
@@ -63,7 +67,7 @@ export const checkIfReviewAlreadyExists = async (req, propertyReviewResource) =>
 };
 
 export const propertyReviewNotfound = async (req, propertyReviewResource) => {
-  const propertyReview = await propertyReviewResource.findById(req.params.propertyReview);
+  const propertyReview = await propertyReviewResource.findById(req.params.id);
   if(!propertyReview) {
     throw createError(404, "Property review does not exist");
   }

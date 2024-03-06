@@ -105,6 +105,7 @@ export const deleteListingById = async (req, res, next) => {
 export const updateListingById = async (req, res, next) => {
   try {
     await listingNotFound(req, Listing);
+    console.log(req)
     const listing = await Listing.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
