@@ -25,12 +25,7 @@ const listingSchema = new Schema({
   description: String,
   rating: Number,
   numberOfRatings: Number,
-  images: [
-    {
-      name: String,
-      url: String,
-    },
-  ],
+  images: [],
   attributes: [
     {
       name: String,

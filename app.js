@@ -1,8 +1,10 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import "dotenv/config";
 import listingRouter from "./routes/listingRouter.js";
+
 
 import bookingRouter from "./routes/bookingRouter.js"
 import signupRouter from "./routes/signupRouter.js"
@@ -27,6 +29,7 @@ const { PORT = 5000, DB_URI } = process.env;
 app
   .use(cors({ origin: "http://localhost:5173", credentials: true }))
   .use(express.json())
+  .use(cookieParser())
   .use("/listings", listingRouter)
   .use("/bookings", bookingRouter)
 
