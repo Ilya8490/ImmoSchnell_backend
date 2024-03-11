@@ -66,6 +66,7 @@ export const getAllListings = async (req, res, next) => {
     }
 
     listings = await query.exec();
+  
 
     paginatedSuccessHandler(res, 200, listings, totalListingCount);
   } catch (error) {
@@ -75,7 +76,9 @@ export const getAllListings = async (req, res, next) => {
 
 export const getListingById = async (req, res, next) => {
   try {
-    const listing = await Listing.findById(req.params.id);
+    const listing = await Listing.findById(req.params.id).populate([
+      { path: "user", strictPopulate: false },
+    ]);
     successHandler(res, 200, listing);
   } catch (error) {
     next(error);
@@ -86,7 +89,8 @@ export const addListing = async (req, res, next) => {
   try {
     const listing = req.body;
     await userNotFound(req, User);
-    Listing.create(listing);
+    const correctedListing = {...listing , name: listing.name.charAt(0).toUpperCase() + listing.name.slice(1)}
+    Listing.create(correctedListing);
     successHandler(res, 200, listing);
   } catch (error) {
     next(error);
