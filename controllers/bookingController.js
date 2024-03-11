@@ -58,11 +58,13 @@ export const addBooking = async (req, res, next) => {
 
     const listing = await Listing.findById(listingId);
     checkListingCapacity(req, listing.numberOfBeds);
-    checkPrice(req, listing.pricePerNight);
+    checkPrice(req, listing.pricePerNight, booking.guestCount);
     await checkIfListingAvailable(req, Booking);
 
-    Booking.create(booking);
-    successHandler(res, 200, booking);
+    const newBooking = await Booking.create(booking)
+    console.log(newBooking)
+    successHandler(res, 200, newBooking);
+ 
   } catch (error) {
     next(error);
   }

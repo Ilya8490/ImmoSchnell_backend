@@ -80,7 +80,7 @@ export const checkListingCapacity = (req, numberOfBeds) => {
   }
 };
 
-export const checkPrice = (req, pricePerNight) => {
+export const checkPrice = (req, pricePerNight, guestCount) => {
   const price = req.body.price;
   const checkIn = new Date(req.body.checkIn);
   const checkOut = new Date(req.body.checkOut);
@@ -88,7 +88,7 @@ export const checkPrice = (req, pricePerNight) => {
 
   const totalPrice =
     Math.round((checkOut.getTime() - checkIn.getTime()) / oneDay) *
-    pricePerNight;
+    pricePerNight * guestCount;
   if (price !== totalPrice) {
     throw createError(400, "Price is not correct");
   }
@@ -112,3 +112,4 @@ export const checkIfListingAvailable = async (req, bookingResource) => {
     throw createError(400, "Property is not available");
   }
 };
+
