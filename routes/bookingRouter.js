@@ -1,17 +1,17 @@
 import express from "express";
 
 import {
-    getAllBookings,
     getBookingById,
     addBooking,
     deleteBookingById,
     updateSingleAttributeById,
+    getAllBookingsOfUser,
 
 } from "../controllers/bookingController.js"
 
 const router = express.Router();
 
-router.route("/").get(getAllBookings);
+router.route("/").get(getAllBookingsOfUser);
 
 router.route("/:id").get(getBookingById);
 

@@ -11,12 +11,16 @@ import Booking from "../models/bookingModel.js";
 import Listing from "../models/listingModel.js";
 import User from "../models/userModel.js";
 
-export const getAllBookings = async (req, res, next) => {
+export const getAllBookingsOfUser = async (req, res, next) => {
   try {
+    let userId = req.query.userId;
     const defaultSortBy = "checkIn";
     const defaultSortOrder = "descending";
     const sortByParam = req.query.sortBy;
     const sortOrderParam = req.query.sortOrder;
+    const currentDay = Date.now();
+    const filter = req.query.filter;
+
     let sortBy;
     let sortOrder;
     if (sortByParam) {
@@ -30,9 +34,23 @@ export const getAllBookings = async (req, res, next) => {
       sortBy = defaultSortBy;
       sortOrder = defaultSortOrder;
     }
-    const bookings = await Booking.find().sort({[sortBy]:sortOrder}).populate([
+
+    
+
+    let query =  Booking.find().where("user").equals(userId).sort({[sortBy]:sortOrder}).populate([
       { path: "listing", strictPopulate: false },
     ]);
+
+    if(filter === "previous") {
+      query = query.where("checkIn").lt(currentDay).where("status").equals("active")
+    } else if (filter === "upcoming") {
+      query = query.where("checkIn").gte(currentDay).where("status").equals("active")
+    } else if (filter === "cancelled") {
+      query = query.where("status").equals("cancelled")
+    }
+
+    const bookings = await query.exec()
+
     successHandler(res, 200, bookings);
   } catch (error) {
     next(error);
@@ -62,7 +80,7 @@ export const addBooking = async (req, res, next) => {
     await checkIfListingAvailable(req, Booking);
 
     const newBooking = await Booking.create(booking)
-    console.log(newBooking)
+
     successHandler(res, 200, newBooking);
  
   } catch (error) {

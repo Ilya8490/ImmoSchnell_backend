@@ -61,12 +61,12 @@ export const getAllListings = async (req, res, next) => {
     const totalListingCount = await Listing.estimatedDocumentCount(
       query
     ).exec();
+
     if (page && limit) {
       query = query.skip((page - 1) * limit).limit(limit);
     }
 
     listings = await query.exec();
-  
 
     paginatedSuccessHandler(res, 200, listings, totalListingCount);
   } catch (error) {
@@ -89,7 +89,10 @@ export const addListing = async (req, res, next) => {
   try {
     const listing = req.body;
     await userNotFound(req, User);
-    const correctedListing = {...listing , name: listing.name.charAt(0).toUpperCase() + listing.name.slice(1)}
+    const correctedListing = {
+      ...listing,
+      name: listing.name.charAt(0).toUpperCase() + listing.name.slice(1),
+    };
     Listing.create(correctedListing);
     successHandler(res, 200, listing);
   } catch (error) {
@@ -109,7 +112,7 @@ export const deleteListingById = async (req, res, next) => {
 export const updateListingById = async (req, res, next) => {
   try {
     await listingNotFound(req, Listing);
-    console.log(req)
+    console.log(req);
     const listing = await Listing.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
