@@ -58,7 +58,7 @@ export const getAllListings = async (req, res, next) => {
     query = query.where("_id").nin(bookedListings);
 
     query = query.sort({ [sortBy]: sortOrder });
-    const totalListingCount = await Listing.estimatedDocumentCount(
+    const totalListingCount = await Listing.countDocuments(
       query
     ).exec();
 
@@ -73,6 +73,38 @@ export const getAllListings = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getAllListingsOfUser = async (req, res, next) => {
+  try {
+    const { limit, page } = req.query;
+    const sortBy = "name";
+    const sortOrder = "ascending";
+    const userId = req.params.id
+
+    let listings;
+    let query = Listing.find().where("user").equals(userId);
+
+    query = query.sort({ [sortBy]: sortOrder });
+
+    const totalListingCount = await Listing.countDocuments(
+      query
+    ).exec();
+   
+    if (page && limit) {
+      query = query.skip((page - 1) * limit).limit(limit);
+    }
+   
+    listings = await query.exec();
+
+   
+ 
+
+    paginatedSuccessHandler(res, 200, listings, totalListingCount);
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 export const getListingById = async (req, res, next) => {
   try {
