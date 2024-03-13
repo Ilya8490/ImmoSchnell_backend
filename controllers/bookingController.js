@@ -20,6 +20,8 @@ export const getAllBookingsOfUser = async (req, res, next) => {
     const sortOrderParam = req.query.sortOrder;
     const currentDay = Date.now();
     const filter = req.query.filter;
+    const favorite = req.query.favorite;
+    const limit = req.query.limit
 
     let sortBy;
     let sortOrder;
@@ -40,6 +42,14 @@ export const getAllBookingsOfUser = async (req, res, next) => {
     let query =  Booking.find().where("user").equals(userId).sort({[sortBy]:sortOrder}).populate([
       { path: "listing", strictPopulate: false },
     ]);
+
+    if(favorite) {
+      query = query.where("favorite").equals(true)
+    }
+
+    if(limit) {
+      query = query.limit(limit)
+    }
 
     if(filter === "previous") {
       query = query.where("checkIn").lt(currentDay).where("status").equals("active")
