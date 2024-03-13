@@ -40,6 +40,8 @@ const bookingSchema = new Schema({
     enum: ["pending", "active", "cancelled"],
     default: "pending"
   },
+
+  favorite: Boolean
 });
 
 export default model("Booking", bookingSchema);

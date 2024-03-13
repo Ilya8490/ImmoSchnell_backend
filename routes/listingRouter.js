@@ -2,6 +2,7 @@ import express from "express";
 
 import {
   getAllListings,
+  getAllListingsOfUser,
   getListingById,
   addListing,
   deleteListingById,
@@ -13,6 +14,8 @@ import {
 const router = express.Router();
 
 router.route("/").get(getAllListings);
+
+router.route("/user/:id").get(getAllListingsOfUser)
 
 router.route("/:id").get(getListingById);
 

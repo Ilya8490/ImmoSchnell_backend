@@ -4,7 +4,7 @@ import PaymentMethod from "../models/paymentMethodModel.js";
 export const getAllPaymentMethodsOfUser = async (req, res, next) => {
   try {
     let userId = req.query.userId
-    const paymentMethods = await PaymentMethod.find().where("user").equals(userId);
+    const paymentMethods = await PaymentMethod.find().where("user").equals(userId).exec();
     successHandler(res, 200, paymentMethods);
   } catch (error) {
     next(error);
@@ -23,6 +23,7 @@ export const getPaymentMethodById = async (req, res, next) => {
 export const addPaymentMethod = async (req, res, next) => {
   try {
     const paymentMethod = req.body;
+    console.log(paymentMethod)
     PaymentMethod.create(paymentMethod);
     successHandler(res, 200, paymentMethod);
   } catch (error) {
