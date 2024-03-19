@@ -60,7 +60,7 @@ export const bookingNotFound = async (req, bookingResource) => {
 };
 
 export const checkIfReviewAlreadyExists = async (req, propertyReviewResource) => {
-  const propertyReview = await propertyReviewResource.findOne({booking: req.body.booking});
+  const propertyReview = await propertyReviewResource.findOne({booking: req.body.booking, user: req.body.user});
   if(propertyReview){
     throw createError(400, "review already exists");
   }

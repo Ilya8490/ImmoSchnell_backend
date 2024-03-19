@@ -24,6 +24,15 @@ export const getPropertyReviewById = async (req, res, next) => {
   }
 };
 
+export const getPropertyReviewOfUser = async (req, res, next) => {
+  try {
+    const review = await PropertyReview.findOne({booking: req.params.id, user: req.params.userId})
+    successHandler(res, 200, review);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const addPropertyReview = async (req, res, next) => {
   try {
     const review = req.body;
