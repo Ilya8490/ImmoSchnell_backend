@@ -5,11 +5,12 @@ const propertyReviewSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Booking",
   },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
   comment: {
-    type: String,
-    required: [true, 'Comment is required'],
-    minlength: [5, 'Comment must be at least 5 characters long'],
-    maxlength: [500, 'Comment cannot be more than 500 characters long']
+    type: String, 
   },
   rating: {
     type: Number,
