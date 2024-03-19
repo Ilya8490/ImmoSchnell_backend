@@ -6,7 +6,8 @@ import {
   addPropertyReview,
   deletePropertyReviewById,
   updatePropertyReviewById,
-  updateSingleAttributeById
+  updateSingleAttributeById,
+  getPropertyReviewOfUser
 } from "../controllers/propertyReviewController.js";
 
 
@@ -15,6 +16,8 @@ const router = express.Router();
 router.route("/").get(getAllPropertyReviews);
 
 router.route("/:id").get(getPropertyReviewById);
+
+router.route("/:id/user/:userId").get(getPropertyReviewOfUser);
 
 router.route("/").post(addPropertyReview);
 
